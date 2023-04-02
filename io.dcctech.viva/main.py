@@ -14,6 +14,11 @@ import webbrowser
 # Initialize the text-to-speech engine
 engine = pyttsx3.init()
 
+# Get a list of available voices
+# voices = engine.getProperty('voices')
+
+# Set the desire voice
+# engine.setProperty('voice', voices[0].id)
 
 # Define a function to speak text aloud
 def speak(text):
@@ -25,7 +30,7 @@ def speak(text):
 def recognize_speech():
     r = sr.Recognizer()
     with sr.Microphone() as source:
-        print("Listening...")
+        print("Speak now...")
         audio = r.listen(source)
     try:
         text = r.recognize_google(audio)
@@ -50,8 +55,7 @@ def create_reminder():
                 if reminder_time_obj.time() > current_time_obj:
                     reminder = "Okay, I'll remind you to {reminder_text} at {reminder_time}"
                     speak(f"Okay, I'll remind you to {reminder_text} at {reminder_time}")
-                    with open(file_name("reminder"), 'w') as f:
-                        f.write(reminder)
+                    save_to_file("reminder", reminder)
                 else:
                     speak("Sorry, that time has already passed.")
             except:
@@ -63,8 +67,7 @@ def create_todo_list():
     speak("What do you want to add to your to-do list?")
     todo_text = recognize_speech()
     if todo_text:
-        with open(file_name("task"), 'w') as f:
-            f.write(todo_text)
+        save_to_file("task", todo_text)
 
 
 # Define a function to search Wikipedia
@@ -76,6 +79,8 @@ def search_wikipedia():
             speak(f"Here's what I found on Wikipedia about {search_text}")
             summary = wikipedia.summary(search_text, 2)
             speak(summary)
+            save_to_file("Wikipedia", summary)
+
         except:
             speak("Sorry, I couldn't find any information on that.")
 
@@ -95,6 +100,11 @@ def file_name(name):
     return "{name}_{now}.txt"
 
 
+def save_to_file(name, text):
+    with open(file_name(name), 'w') as f:
+        f.write(text)
+
+
 # Main loop
 while True:
     speak("How can I help you?")
@@ -102,11 +112,11 @@ while True:
     if text:
         if "remind me" in text:
             create_reminder()
-        elif "to-do list" in text:
+        elif "create to-do list" in text:
             create_todo_list()
         elif "Wikipedia" in text:
             search_wikipedia()
         elif "search the web" in text:
             search_web()
-        elif "quit" in text:
+        elif "stop" in text:
             break
