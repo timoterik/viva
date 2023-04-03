@@ -14,31 +14,41 @@ import webbrowser
 # Initialize the text-to-speech engine
 engine = pyttsx3.init()
 
-# Get a list of available voices
-# voices = engine.getProperty('voices')
-
-# Set the desire voice
-# engine.setProperty('voice', voices[0].id)
 
 # Define a function to speak text aloud
 def speak(text):
+    # voiceChange()
     engine.say(text)
     engine.runAndWait()
+
+
+def voiceChange():
+    # Get a list of available voices
+    voice = engine.getProperty('voices')  # get the available voices
+
+    # Set the desire voice
+    # the voice to index 0 for male voice
+    # the voice to index 1 for female voice
+    engine.setProperty('voice', voice[1].id)  # changing voice to index 1 for female voice
 
 
 # Define a function to recognize speech
 def recognize_speech():
     r = sr.Recognizer()
-    with sr.Microphone() as source:
-        print("Speak now...")
-        audio = r.listen(source)
-    try:
-        text = r.recognize_google(audio)
-        print(f"You said: {text}")
-        return text
-    except:
-        print("Sorry, I didn't catch that.")
-        return None
+    while True:
+        with sr.Microphone() as source:
+            print("Speak now...")
+            audio = r.listen(source)
+        try:
+            text = r.recognize_google(audio)
+            print(f"You said: {text}")
+            return text
+        except sr.UnknownValueError:
+            print("Sorry, I didn't catch that. Please try again.")
+        except Exception as e:
+            print("Oops, something went wrong.")
+            print(e)
+            return None
 
 
 # Define a function to create reminders
@@ -64,10 +74,19 @@ def create_reminder():
 
 # Define a function to create a to-do list
 def create_todo_list():
-    speak("What do you want to add to your to-do list?")
-    todo_text = recognize_speech()
-    if todo_text:
-        save_to_file("task", todo_text)
+    speak("What are the tasks you want to add to the to-do list?")
+    tasks = []
+    while True:
+        task = recognize_speech()
+        if "stop" in task:
+            break
+        tasks.append(task)
+    speak("Here's your to-do list:")
+    for i, task in enumerate(tasks):
+        speak(f" {i + 1}. {task};")
+
+    if tasks is not None:
+        save_to_file("task", "\n".join(tasks))
 
 
 # Define a function to search Wikipedia
@@ -97,7 +116,7 @@ def search_web():
 
 def file_name(name):
     now = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    return "{name}_{now}.txt"
+    return f"{name}_{now}.txt"
 
 
 def save_to_file(name, text):
@@ -108,15 +127,15 @@ def save_to_file(name, text):
 # Main loop
 while True:
     speak("How can I help you?")
-    text = recognize_speech()
-    if text:
-        if "remind me" in text:
+    command = recognize_speech()
+    if command:
+        if "remind me" in command:
             create_reminder()
-        elif "create to-do list" in text:
+        elif "create a to-do list" in command:
             create_todo_list()
-        elif "Wikipedia" in text:
+        elif "Wikipedia" in command:
             search_wikipedia()
-        elif "search the web" in text:
+        elif "search the web" in command:
             search_web()
-        elif "stop" in text:
+        elif "quit" or "none" or "nothing" or "exit" in command:
             break
