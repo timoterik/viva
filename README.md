@@ -1,6 +1,8 @@
 # VIVA - Virtual Intelligent Voice Assistant
 
-VIVA is a virtual voice assistant that can be used to carry out simple tasks, like placing orders or scheduling appointments. This project provides the tools and resources you need to build your own virtual assistant using advanced natural language processing techniques.
+VIVA is a virtual voice assistant that can be used to carry out simple tasks, like placing orders or 
+scheduling appointments. This project provides the tools and resources you need to build your own virtual assistant 
+using advanced natural language processing techniques.
 
 ## Features
 
@@ -17,12 +19,62 @@ improving its accuracy and effectiveness over time.
 To get started with VIVA, you'll need to have some knowledge of programming and natural language processing. 
 
 ## Installation
-
 To install VIVA, follow these steps:
 
-- Clone this repository: git clone https://github.com/timoterik/viva.git
-- Install the required packages: pip install -r requirements.txt
-- Run the main.py file to start the virtual assistant: python main.py
+#### Installing Python:
+- Go to the official Python website at https://www.python.org/downloads/
+- Choose the appropriate version of Python for your operating system and download the installer.
+- Run the installer and follow the on-screen instructions to complete the installation process. Make sure to add 
+Python to your system PATH during the installation process.
+- Once the installation is complete, open the command prompt and type python to verify that Python has been installed correctly.
+
+#### Installing PortAudio:
+
+- On Windows:
+  - Download the pre-built PortAudio binary from the official website: http://www.portaudio.com/download.html
+  - Extract the downloaded zip file to a desired location on your computer.
+  - Add the path of the extracted folder to your environment variables, specifically to your PATH variable. This can be done by following these steps:
+  - Open the Start menu and search for "Environment Variables".
+  - Click on "Edit the system environment variables".
+  - Click on the "Environment Variables" button.
+  - Under "System Variables", find the "Path" variable and click "Edit".
+  - Click "New" and add the path of the extracted PortAudio folder.
+  - Click "OK" on all windows to save the changes.
+  
+- On Mac:
+  - Install Homebrew
+  - Once Homebrew is installed, run the command ```brew install portaudio``` in your terminal.
+
+- On Linux:
+  - Run the command ```sudo apt-get install portaudio19-dev``` in your terminal if you are using Debian/Ubuntu.
+  - Run the command ```sudo dnf install portaudio-devel``` in your terminal if you are using Fedora/CentOS.
+
+After completing the above steps, you should be able to use PortAudio in your Python projects.
+
+
+
+### Installing FLAC:
+- Open the terminal on your machine.
+- Run the appropriate command for your operating system to install FLAC:
+  - On Ubuntu/Debian: ```sudo apt-get install flac```
+  - On Fedora: ```sudo dnf install flac```
+  - On macOS with Homebrew: ```brew install flac```
+  - On Windows: Download the FLAC installer from https://xiph.org/flac/download.html and run the installer.
+- Once the installation is complete, you can verify that FLAC has been installed correctly by running the flac command in the terminal.
+
+### Install VIVA
+- Clone this repository:
+```sh
+git clone https://github.com/timoterik/viva.git
+```
+- Install the required packages: 
+```sh
+pip install -r io.dcctech.viva/requirements.txt
+```
+- Run the main.py file to start the virtual assistant:
+```sh
+python io.dcctech.viva/main.py
+```
 
 ## Usage
 To use VIVA, simply speak into your computer's microphone and ask it to carry out a task. VIVA will use natural 
