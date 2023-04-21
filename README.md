@@ -4,6 +4,26 @@ VIVA is a virtual voice assistant that can be used to carry out simple tasks, li
 scheduling appointments. This project provides the tools and resources you need to build your own virtual assistant 
 using advanced natural language processing techniques.
 
+The application begins by greeting the user and asking how it can be of assistance. It then enters a loop that 
+listens for user input through speech recognition.
+
+If the user's input is the phrase "remind me," the function will create a reminder. If the input is the
+phrase "create a to-do list," the function will create a to-do list. If the input is the word "Wikipedia," the
+function will search for Wikipedia. If the input contains the phrase "search the web," the function will perform 
+a web search. If the input is the word "GPT," the function will perform a task related to GPT. To use this function,
+you can talk to ChatGPT by speaking to it and giving it commands. The function will continue to listen for your input 
+and respond accordingly until you say the word "stop" to end the application.
+
+  To create an OpenAI API key, first sign up for an account on the OpenAI website. Once you have an account, navigate to
+  the API page and click "Create API Key". You will then be prompted to provide a name for your API key and select 
+  which API endpoints you would like the key to have access to. Once you have done this, click "Create API Key" 
+  again to generate your new key. You can then copy and paste the key into your code or save it in a secure location 
+  for future use.
+
+If the input does not match any of these options, the function will inform the user that it cannot find a 
+suitable option and ask the user to repeat their input.
+
+The loop will continue until the user says "quit" or "exit," at which point the function will end.
 ## Features
 
 - Easy-to-use voice interface
