@@ -19,13 +19,6 @@ openai.api_key = "sk-efel87z6t5r4eedwdwdwdwdKtTPkyGYT9FajE30Ekxq"  # TODO you mu
 engine = pyttsx3.init()
 
 
-# # Initialize the PyAudio object
-# p = pyaudio.PyAudio()
-#
-# # Set up the stream for recording audio
-# stream = p.open(format=pyaudio.paInt16, channels=1, rate=44100, input=True, frames_per_buffer=1024)
-
-
 # Define a function to speak text aloud
 def speak(text):
     # voiceChange()
