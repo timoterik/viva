@@ -3,16 +3,27 @@
 #  for use of DCCTech's intellectual property.
 #  Any reproduction, modification, distribution, or other use of DCCTech's intellectual property without prior written
 #  consent is strictly prohibited.
-
-
-import speech_recognition as sr
-import pyttsx3
 import datetime
-import wikipedia
+import os
 import webbrowser
+
+import openai
+import pyttsx3
+import speech_recognition as sr
+import wikipedia
+
+# Set up the API key for GPT-3
+openai.api_key = "sk-efel87z6t5r4eedwdwdwdwdKtTPkyGYT9FajE30Ekxq"  # TODO you must regenerate this API key
 
 # Initialize the text-to-speech engine
 engine = pyttsx3.init()
+
+
+# # Initialize the PyAudio object
+# p = pyaudio.PyAudio()
+#
+# # Set up the stream for recording audio
+# stream = p.open(format=pyaudio.paInt16, channels=1, rate=44100, input=True, frames_per_buffer=1024)
 
 
 # Define a function to speak text aloud
@@ -41,7 +52,7 @@ def recognize_speech():
             audio = r.listen(source)
         try:
             text = r.recognize_google(audio)
-            print(f"You said: {text}")
+            print(f"You: {text}")
             return text
         except sr.UnknownValueError:
             print("Sorry, I didn't catch that. Please try again.")
@@ -70,6 +81,7 @@ def create_reminder():
                     speak("Sorry, that time has already passed.")
             except:
                 speak("Sorry, I didn't understand the time you said.")
+    restart_main()
 
 
 # Define a function to create a to-do list
@@ -88,6 +100,8 @@ def create_todo_list():
     if tasks is not None:
         save_to_file("task", "\n".join(tasks))
 
+    restart_main()
+
 
 # Define a function to search Wikipedia
 def search_wikipedia():
@@ -98,10 +112,10 @@ def search_wikipedia():
             speak(f"Here's what I found on Wikipedia about {search_text}")
             summary = wikipedia.summary(search_text, 2)
             speak(summary)
-            save_to_file("Wikipedia", summary)
-
+            save_to_file("wikipedia", summary)
         except:
             speak("Sorry, I couldn't find any information on that.")
+    restart_main()
 
 
 # Define a function to search the web
@@ -112,6 +126,7 @@ def search_web():
         url = f"https://www.google.com/search?q={search_text}"
         webbrowser.open_new_tab(url)
         speak(f"Here's what I found on the web about {search_text}")
+    restart_main()
 
 
 def file_name(name):
@@ -120,13 +135,42 @@ def file_name(name):
 
 
 def save_to_file(name, text):
-    with open(file_name(name), 'w') as f:
+    abspath = os.path.abspath(os.path.dirname(__file__))
+    path = os.path.join(abspath, f"../var/{name}/{file_name(name)}")
+    with open(path, 'w') as f:
         f.write(text)
 
 
+def restart_main():
+    speak("How can I help you")
+
+
+def ask_gpt():
+    speak("What do you want to ask ChatGPT")
+    # speak(f"You asked ChatGPT this: {question}")
+    whole_script = ""
+    while True:
+        question = recognize_speech()
+        if "stop" in question:
+            save_to_file("gpt", whole_script)
+            restart_main()
+            break
+        elif question:
+            whole_script += f"You: {question}\n"
+            response = openai.Completion.create(
+                engine="text-davinci-003",
+                prompt=question,
+                temperature=0.4,
+                max_tokens=150
+            )
+            answer = response.choices[0].text
+            whole_script += f"GPT: {answer.strip()}\n"
+            speak(answer)
+
+
 # Main loop
+speak("Hello, how can I help you")
 while True:
-    speak("How can I help you?")
     command = recognize_speech()
     if command:
         if "remind me" in command:
@@ -137,5 +181,9 @@ while True:
             search_wikipedia()
         elif "search the web" in command:
             search_web()
-        elif "quit" or "none" or "nothing" or "exit" in command:
+        elif "GPT" in command:
+            ask_gpt()
+        elif "quit" in command or "exit" in command:
             break
+        else:
+            speak("Unfortunately, I can't find such an option. Could you repeat that?")

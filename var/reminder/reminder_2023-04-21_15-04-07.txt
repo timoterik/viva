@@ -1,0 +1,1 @@
+Okay, I'll remind you to {reminder_text} at {reminder_time}

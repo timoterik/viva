@@ -1,0 +1,4 @@
+You: what is your favorite series
+GPT: My favorite series is the Harry Potter series.
+You: why do you like it
+GPT: I like it because it's a great way to express myself and get creative. It also helps me to relax and take my mind off of other things. Plus, it's a great way to connect with other people who share the same interests.
