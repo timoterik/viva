@@ -74,8 +74,8 @@ def create_reminder():
                 reminder_time_obj = datetime.datetime.strptime(reminder_time, "%H:%M")
                 current_time_obj = datetime.datetime.now().time()
                 if reminder_time_obj.time() > current_time_obj:
-                    reminder = "Okay, I'll remind you to {reminder_text} at {reminder_time}"
-                    speak(f"Okay, I'll remind you to {reminder_text} at {reminder_time}")
+                    reminder = f"Okay, I'll remind you to {reminder_text} at {reminder_time}"
+                    speak(reminder)
                     save_to_file("reminder", reminder)
                 else:
                     speak("Sorry, that time has already passed.")
